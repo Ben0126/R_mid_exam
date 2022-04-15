@@ -1,21 +1,11 @@
 #Advanced Analytics 
 #mid exam project
 
-# tomato-------------------------------------------------------------
-
-TomatoFirst = read.csv("TomatoFirst.csv", header = TRUE, sep = ",")
-head(TomatoFirst)
-
-
-
-
 # wine---------------------------------------------------------------
 
 
 wine = read.csv("wine.csv", header = TRUE, sep = ",")
 head(wine)
-
-
 
 
 # iris--迴歸分析---------------------------------------------------------
