@@ -1,13 +1,12 @@
 #Advanced Analytics 
 #mid exam project
 
-# iris 
-#迴歸分析 Regression Analysis----
-
+# iris 鳶尾花
 head(iris)
 str(iris) # 查看 iris 內部結構
 iris[!complete.cases(iris),]  # 檢查是否有 NA 的資料
 
+#迴歸分析 Regression Analysis----
 summary(iris) # 查看基本統計量
 library(ggplot2)
 library(GGally)
@@ -56,7 +55,9 @@ new.iris
 # 預測資料
 predict(iris.lm, new.iris)
 
-#類神經網路 neuralnet ----
+
+
+#類神經網路 neural net ----
 
 library(neuralnet)
 library(nnet)
