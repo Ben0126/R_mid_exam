@@ -7,7 +7,7 @@ head(tomato)
 str(tomato) # 查看 tomato 內部結構
 tomato[!complete.cases(tomato),]  # 檢查是否有 NA 的資料
 
-# tomato--迴歸分析---------------------------------------------------------
+# tomato--迴歸分析----
 #迴歸分析
 
 summary(tomato) # 查看基本統計量
@@ -57,3 +57,6 @@ predict(tomato.lm, new.tomato)
 
 
 # tomato--
+
+# 主成份分析 Principal Component Analysis ----
+

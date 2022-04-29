@@ -3,33 +3,29 @@
 
 # iris 鳶尾花
 head(iris)
-str(iris) # 查看 iris 內部結構
-iris[!complete.cases(iris),]  # 檢查是否有 NA 的資料
+str(iris) 
+iris[!complete.cases(iris),]  
 
-# 迴歸分析 Regression Analysis----
-summary(iris) # 查看基本統計量
+
+## 迴歸分析 Regression Analysis----
+summary(iris) 
 library(ggplot2)
 library(GGally)
 ggpairs(iris)
 
-# 畫出 XY 散佈圖
 require(ggplot2)
-qplot(x = Petal.Length,
-      y = Petal.Width,
-      data = iris)
+qplot(x=Petal.Length,      
+      y=Petal.Width, 
+      data=iris, 
+      geom=c("smooth","point"),    # graph type is boxplot
+      color=Species)
+ 
 
-# 畫出 XY 散佈圖，依據 Species 上色
-require(ggplot2)
-qplot(x = Petal.Length,
-      y = Petal.Width,
-      data = iris,
-      color = Species)
-
-# 建立迴歸模型
 iris.lm <- lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width,
               data = iris)
-# 查看模型配適結果
 summary(iris.lm)
+
+names(iris.lm)
 
 library(ggfortify)
 
@@ -48,16 +44,20 @@ durbinWatsonTest(iris.lm)
 require(car)
 ncvTest(iris.lm)
 
-# 迴歸分析結果----
+## 變異數分析 anova----
+a.lm <- lm(Petal.Width~Species, data=iris)
+anova(a.lm)
 
+b.lm <- lm(Petal.Length~Species, data=iris)
+anova(b.lm)
+
+## 預測 ----
 # 新觀測值
 new.iris <- data.frame(Sepal.Width=3.1, Petal.Length=1.6, Petal.Width=0.3)
 new.iris
 
 # 預測資料
 predict(iris.lm, new.iris)
-
-
 
 #類神經網路 neural net ----
 
