@@ -24,7 +24,7 @@ qplot(x = Petal.Length,
       color = Species)
 
 
-#ERROR---------------------------------
+#ERROR
 # 建立迴歸模型
 tomato.lm <- lm(Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width,
               data = tomato)
@@ -54,3 +54,6 @@ new.tomato
 
 # 預測資料
 predict(tomato.lm, new.tomato)
+
+
+# tomato--

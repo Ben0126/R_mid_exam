@@ -6,7 +6,7 @@ head(iris)
 str(iris) # 查看 iris 內部結構
 iris[!complete.cases(iris),]  # 檢查是否有 NA 的資料
 
-#迴歸分析 Regression Analysis----
+# 迴歸分析 Regression Analysis----
 summary(iris) # 查看基本統計量
 library(ggplot2)
 library(GGally)
@@ -47,6 +47,8 @@ durbinWatsonTest(iris.lm)
 # 殘差變異數同質性檢定
 require(car)
 ncvTest(iris.lm)
+
+# 迴歸分析結果----
 
 # 新觀測值
 new.iris <- data.frame(Sepal.Width=3.1, Petal.Length=1.6, Petal.Width=0.3)
