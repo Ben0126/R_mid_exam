@@ -1,6 +1,3 @@
-#Advanced Analytics 
-#mid exam project
-
 # wine
 wine = read.csv("wine.csv", header = TRUE, sep = ",")
 head(wine)
@@ -83,7 +80,10 @@ data <- wine
 # 原始資料就會變成像這樣
 head(data)
 
-formula.bpn <- Alcohol ~  Cultivar+ Malic.acid + Ash + Alcalinity.of.ash  + Magnesium + Total.phenols + Flavanoids + Nonflavanoid.phenols + Proanthocyanins + Color.intensity + Hue + OD280.OD315.of.diluted.wines + Proline  
+formula.bpn <- Alcohol ~  Cultivar+ Malic.acid + Ash + Alcalinity.of.ash  +
+                Magnesium + Total.phenols + Flavanoids + Nonflavanoid.phenols +
+                Proanthocyanins + Color.intensity + Hue + OD280.OD315.of.diluted.wines + Proline  
+
 bpn <- neuralnet(formula = formula.bpn, data = data, hidden = c(2,4,2), learningrate = 0.01)    
                  
 # bpn模型會長得像這樣
@@ -110,7 +110,7 @@ model <- train(form=formula.bpn,     # formula
                
                # 最重要的步驟：觀察不同排列組合(第一層1~4個nodes ; 第二層0~4個nodes)
                # 看何種排列組合(多少隱藏層、每層多少個node)，會有最小的RMSE
-               tuneGrid = expand.grid(.layer1=c(1:4), .layer2=c(0:6), .layer3=c(0:6)),               
+               tuneGrid = expand.grid(.layer1=c(1:6), .layer2=c(0:6), .layer3=c(0:6)),               
                
                # 以下的參數設定，和上面的neuralnet內一樣
                learningrate = 0.01,  
@@ -126,7 +126,7 @@ plot(model)
 
 bpn <- neuralnet(formula = formula.bpn, 
                  data = train,
-                 hidden = c(4,5,6),     # 第一隱藏層1個node，第二隱藏層2個nodes
+                 hidden = c(6,6,6),     # 第一隱藏層1個node，第二隱藏層2個nodes
                  learningrate = 0.01, # learning rate
                  threshold = 0.01,    # partial derivatives of the error function, a stopping criteria
                  )
@@ -135,21 +135,21 @@ bpn <- neuralnet(formula = formula.bpn,
 plot(bpn)
 
 pred <- compute(bpn,test)  
-pred$net.result
+pred$Alcohol
 
-
+pred
 
 # 建立一個新欄位，叫做Alcohol
 pred$Alcohol <- ""
 
 # 把結果轉成data frame的型態
 pred <- as.data.frame(pred)
-pred[i, 1]=={pred[i, "Alcohol"] <- pred[i, 1]}
+pred[i, "Alcohol"] = pred[i, 1]
 pred
 
 # 混淆矩陣 (預測率有96.67%)
 table(real = test$Alcohol, predict = pred$Alcohol)
-table(real=test$Alcohol, predict=pred)
+table(real=test$Alcohol, predict=pred$Alcohol)
 
 prunetree_confus.matrix <- table(real=test$Alcohol, predict=pred$Alcohol)
 sum(diag(prunetree_confus.matrix))/sum(prunetree_confus.matrix) # 對角線的數量/總數量

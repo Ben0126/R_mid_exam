@@ -24,7 +24,7 @@ str(tomato)
 summary(tomato) 
 require(arules)
 
-rule <- apriori(tomato, parameter=list(minlen=2, supp=0.01, conf=0.01))
+rule <- apriori(tomato, parameter=list(minlen=2, supp=0.1, conf=0.1))
 inspect(rule)
 
 sort.rule <- sort(rule, by="lift")
@@ -64,7 +64,7 @@ plot(sort.rule, method="grouped")
 
 require(rpart)
 
-set.seed(22)
+set.seed(50)
 train.index <- sample(x=1:nrow(tomato), size=ceiling(1*nrow(tomato) ))
 train <- tomato[train.index, ]
 
@@ -76,7 +76,7 @@ cart.model
 require(rpart.plot) 
 prp(cart.model,         # 模型
     faclen=0,           # 呈現的變數不要縮寫
-    extra=1)
+    extra=5)
 
 require(partykit)   
 rparty.tree <- as.party(cart.model) # 轉換cart決策樹

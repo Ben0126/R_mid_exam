@@ -1,20 +1,59 @@
 #Advanced Analytics 
 #mid exam project
 
-# tomato-------------------------------------------------------------
 
-TomatoFirst = read.csv("TomatoFirst.csv", header = TRUE, sep = ",")
-head(TomatoFirst)
+## 迴歸分析 Regression Analysis----
+summary(iris) 
+library(ggplot2)
+library(GGally)
+ggpairs(iris)
+
+require(ggplot2)
+qplot(x=Species,      
+      y=Sepal.Length, 
+      data=iris, 
+      geom=c("smooth","point"),    
+      color=Species)
 
 
+iris.lm <- lm(Species ~Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,data = iris)
+summary(iris.lm)
+
+names(iris.lm)
+
+library(ggfortify)
+
+# 畫出模型診斷用的圖
+autoplot(iris.lm)
+
+# 常態性檢定
+shapiro.test(iris.lm$residual)
+
+# 殘差獨立性檢定
+library(car)
+require(car)
+durbinWatsonTest(iris.lm)
+
+# 殘差變異數同質性檢定
+require(car)
+ncvTest(iris.lm)
+
+## 變異數分析 anova
+a.lm <- lm(Petal.Width~Species, data=iris)
+anova(a.lm)
+
+b.lm <- lm(Petal.Length~Species, data=iris)
+anova(b.lm)
+
+## 預測 
 
 
-# wine---------------------------------------------------------------
+# 新觀測值
+new.iris <- data.frame(Sepal.Width=3.1, Petal.Length=1.6, Petal.Width=0.3)
+new.iris
 
-
-wine = read.csv("wine.csv", header = TRUE, sep = ",")
-head(wine)
-
+# 預測資料
+predict(iris.lm, new.iris)
 
 
 
