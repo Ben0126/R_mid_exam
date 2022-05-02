@@ -12,7 +12,7 @@ test = test[,-2]  #刪除Tomato
 test = test[,-3]  #刪除Source
 test = test[,-1]  #刪除round
 
-#tomato
+# train
 tomato = tomato[-10,]  #刪除第10列
 tomato = tomato[,-2]  #刪除Tomato
 tomato = tomato[,-3]  #刪除Source
@@ -30,17 +30,13 @@ inspect(rule)
 sort.rule <- sort(rule, by="lift")
 inspect(sort.rule)
 
-## 冗規則判斷與去除
-# 先根據 support 大小排序 rules
+## 冗於規則判斷與去除
+# 根據support大小排序規則
 sort.rule <- sort(rule, by="support")
-
-# 'arules' version = 1.4-2 , under R-3.2.5
 subset.matrix <- is.subset(x=sort.rule, y=sort.rule)
-
-# 'arules' version = 1.5-2 , under R-3.4.0
 subset.matrix <- as.matrix(is.subset(x=sort.rule, y=sort.rule))
 
-# 把這個矩陣的下三角去除，只留上三角的資訊
+# 將矩陣的下三角去除，只留上三角的資訊
 subset.matrix[lower.tri(subset.matrix, diag=T)] <- NA
 
 # 計算每個column中TRUE的個數，若有一個以上的TRUE，代表此column是多餘的
@@ -49,11 +45,12 @@ redundant <- colSums(subset.matrix, na.rm=T) >= 1
 # 移除多餘的規則
 sort.rule <- sort.rule[!redundant]
 
+# 顯示整理後的結果
 inspect(sort.rule)
 
+# 資料視覺化
 require(arulesViz)
 plot(sort.rule)
-
 plot(sort.rule, method="graph")
 plot(sort.rule, method="grouped")
 
@@ -61,10 +58,9 @@ plot(sort.rule, method="grouped")
 
 
 ## 決策樹 Decision Tree ----
-
 require(rpart)
 
-set.seed(50)
+set.seed(16)
 train.index <- sample(x=1:nrow(tomato), size=ceiling(1*nrow(tomato) ))
 train <- tomato[train.index, ]
 
@@ -74,10 +70,13 @@ cart.model<- rpart(Price~. ,  data=train)
 cart.model
 
 require(rpart.plot) 
+
+# 畫出決策樹
 prp(cart.model,         # 模型
-    faclen=0,           # 呈現的變數不要縮寫
+    faclen=0,           
     extra=5)
 
+## 整理決策樹
 require(partykit)   
 rparty.tree <- as.party(cart.model) # 轉換cart決策樹
 rparty.tree # 輸出各節點的細部資訊
@@ -92,15 +91,14 @@ prunetree_cart.model <- prune(cart.model,
 prunetree_pred <- predict(cart.model,test)
 prunetree_pred
 
-
 require(caret)
 require(e1071)
 train_control <- trainControl(method="cv", number=10)
 train_control.model <- train(Price~., data=train, method="rpart", trControl=train_control)
 train_control.model
 
-## 預測 ----
 
+## 預測 ----
 pred <- predict(cart.model,test)
 pred
 

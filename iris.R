@@ -25,7 +25,7 @@ names(iris.lm)
 
 library(ggfortify)
 
-# 畫出模型診斷用的圖
+# 模型診斷圖
 autoplot(iris.lm)
 
 # 常態性檢定
@@ -48,16 +48,14 @@ b.lm <- lm(Sepal.Width~Species, data=iris)
 anova(b.lm)
 
 ## 預測 
-
-
-# 新觀測值
+# set test
 new.iris <- data.frame(Sepal.Width=3.1, Sepal.Width=5, Petal.Width=0.3)
 new.iris
 
 # 預測資料
 predict(iris.lm, new.iris)
 
-# iris 類神經網路 neural net ----
+## iris 類神經網路 neural net ----
 
 library(neuralnet)
 library(nnet)
@@ -65,17 +63,15 @@ library(caret)
 
 data <- iris
 
-# 因為Species是類別型態，這邊轉換成三個output nodes，使用的是class.ind函式()
+# 將Species轉換成三個output nodes
 head(class.ind(data$Species))
 
-# 並和原始的資料合併在一起，cbind意即column-bind
+# 資料合併，cbind即column-bind
 data <- cbind(data, class.ind(data$Species))
-
-# 原始資料就會變成像這樣
 head(data)
 
+# 建立神經網路
 formula.bpn <- setosa + versicolor + virginica ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width
-
 bpn <- neuralnet(formula = formula.bpn, 
                  data = data,
                  hidden = c(2,4,2),       
@@ -86,8 +82,7 @@ bpn <- neuralnet(formula = formula.bpn,
 # bpn模型
 plot(bpn)
 
-
-
+# 80%資料作為訓練用，20%為預測用
 smp.size <- floor(0.8*nrow(data)) 
 set.seed(131)                     
 train.ind <- sample(seq_len(nrow(data)), smp.size)
@@ -112,7 +107,7 @@ model
 # 把參數組合和RMSE畫成圖
 plot(model)
 
-
+# 重新建立model
 bpn <- neuralnet(formula = formula.bpn, 
                  data = train,
                  hidden = c(1,2,3),     
@@ -124,8 +119,7 @@ bpn <- neuralnet(formula = formula.bpn,
 # 匯出新模型
 plot(bpn)
 
-# 需要注意的是，輸入的test資料只能包含input node的值
-# 所以取前四個欄位，丟入模型進行預測
+# 輸入的test資料只能包含input node的值，取前四個欄位，丟入模型進行預測
 pred <- compute(bpn, test[, 1:4])  
 
 # 預測結果
