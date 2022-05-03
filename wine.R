@@ -122,15 +122,15 @@ pred <- compute(bpn,test[,-2])
 pred.result <- round(pred$net.result,1)
 pred$net.result
 
-pred.result <- as.data.frame(pred.result)
+error = pred.result - test$Alcohol
+error
 
-# 建立一個新欄位，叫做Alcohol
-pred.result$Alcohol <- ""
+Error_percent = (error / test$Alcohol)*100
+Error_percent = abs(err)
+Error_percent = mean(err)
+Error_percent = round(err,2)
 
+# 誤差3.68%
+Error_percent
 
-# 混淆矩陣 (預測率有96.67%)
-table(real = test$Alcohol, predict = pred.result$Alcohol)
-
-
-prunetree_confus.matrix <- table(real=test$Alcohol, predict=pred$Alcohol)
-sum(diag(prunetree_confus.matrix))/sum(prunetree_confus.matrix) # 對角線的數量/總數量
+#pred.result <- as.data.frame(pred.result)
