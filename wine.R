@@ -122,11 +122,22 @@ pred <- compute(bpn,test[,-2])
 pred.result <- round(pred$net.result,1)
 pred$net.result
 
+error = pred.result - test$Alcohol
+error
+
+err = (error / test$Alcohol)*100
+err = abs(err)
+err = mean(err)
+err = round(err,2)
+err
+
 pred.result <- as.data.frame(pred.result)
 
 # 建立一個新欄位，叫做Alcohol
 pred.result$Alcohol <- ""
 
+error = pred.result - test$Alcohol
+error
 
 # 混淆矩陣 (預測率有96.67%)
 table(real = test$Alcohol, predict = pred.result$Alcohol)
