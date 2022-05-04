@@ -96,10 +96,13 @@ test <- data[-train.ind, ]
 # tune parameters
 model <- train(form=formula.bpn,     
                data=train,           
-               method="neuralnet",   # 類神經網路(bpn)
-               tuneGrid = expand.grid(.layer1=c(1:6), .layer2=c(0:6), .layer3=c(0:6)),               
-               learningrate = 0.01,
-               )
+               method="neuralnet",   
+               
+               tuneGrid = expand.grid(.layer1=c(1:6), .layer2=c(4:6), .layer3=c(2:6)),               
+               learningrate = 0.01,  
+               threshold = 0.01,     
+               stepmax = 5e5         
+)
 
 # 顯示最佳解
 model
@@ -110,7 +113,7 @@ plot(model)
 # 重新建立model
 bpn <- neuralnet(formula = formula.bpn, 
                  data = train,
-                 hidden = c(6,6,6),     # 第一隱藏層1個node，第二隱藏層2個nodes
+                 hidden = c(6,4,6),     # 第一隱藏層1個node，第二隱藏層2個nodes
                  learningrate = 0.01, # learning rate
                  threshold = 0.01,    # partial derivatives of the error function, a stopping criteria
                  )
@@ -125,23 +128,15 @@ pred$net.result
 error = pred.result - test$Alcohol
 error
 
-err = (error / test$Alcohol)*100
-err = abs(err)
-err = mean(err)
-err = round(err,2)
-err
+Error_percent = (error / test$Alcohol)*100
+Error_percent = abs(err)
+Error_percent = mean(err)
+Error_percent = round(err,2)
 
-pred.result <- as.data.frame(pred.result)
+# 誤差3.68%
+Error_percent
 
-# 建立一個新欄位，叫做Alcohol
-pred.result$Alcohol <- ""
-
-error = pred.result - test$Alcohol
-error
-
-# 混淆矩陣 (預測率有96.67%)
-table(real = test$Alcohol, predict = pred.result$Alcohol)
+#pred.result <- as.data.frame(pred.result)
 
 
-prunetree_confus.matrix <- table(real=test$Alcohol, predict=pred$Alcohol)
-sum(diag(prunetree_confus.matrix))/sum(prunetree_confus.matrix) # 對角線的數量/總數量
+

@@ -41,19 +41,19 @@ require(car)
 ncvTest(iris.lm)
 
 ## 變異數分析 anova
-a.lm <- lm(Sepal.Length~Species, data=iris)
-anova(a.lm)
+SL.lm <- lm(Sepal.Length~Species, data=iris)
+anova(SL.lm) # Sepal.Length~Species
 
-b.lm <- lm(Sepal.Width~Species, data=iris)
-anova(b.lm)
+SW.lm <- lm(Sepal.Width~Species, data=iris)
+anova(SW.lm)  # Sepal.Width~Species
 
-## 預測 
-# set test
-new.iris <- data.frame(Sepal.Width=3.1, Sepal.Width=5, Petal.Width=0.3)
-new.iris
+PL.lm <- lm(Petal.Length~Species, data=iris)
+anova(PL.lm)  # Petal.Length~Species
 
-# 預測資料
-predict(iris.lm, new.iris)
+PW.lm <- lm(Petal.Width~Species, data=iris)
+anova(PW.lm)  # Petal.Width~Species
+
+
 
 ## iris 類神經網路 neural net ----
 
